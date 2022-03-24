@@ -58,7 +58,7 @@ type Document = {
     subject_name:string;
     semester:number;
     branch:string;
-    doc_type:number; // 0 - notes , 1 - paper , 2 - syllabus
+    doc_type:number; // 0 - notes , 1 - paper , 2 -syllabus
     rating_count: number;
     avg_rating: number;
     view_count: number;

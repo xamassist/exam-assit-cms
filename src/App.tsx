@@ -59,13 +59,10 @@ type Document = {
     semester:number;
     branch:string;
     doc_type:number; // 0 - notes , 1 - paper , 2 -syllabus
-    rating_count: number;
-    avg_rating: number;
-    view_count: number;
-    upload_date: Date;
-    uploader_name: string;
-    uploader_id:string;
     paper_year?:number;
+    pdf_url:string;
+    doc_size:number;
+    uploader:string;
 }
 const docSchema = buildSchema<Document>({
     name: "Documents",
@@ -98,6 +95,11 @@ const docSchema = buildSchema<Document>({
             validation: { required: true },
             dataType: "number"
         },
+        doc_size: {
+            title: "page count",
+            validation: { required: true },
+            dataType: "number"
+        },
         branch: {
             title: "Branch",
             validation: { required: true },
@@ -108,42 +110,27 @@ const docSchema = buildSchema<Document>({
             validation: { required: true },
             dataType: "number"
         },
-        rating_count: {
-            title: "Rating",
-            dataType: "number"
-        },
-        avg_rating: {
-            title: "Avg rating",
-            dataType: "number"
-        },
-        view_count: {
-            title: "View Count",
-            dataType: "number"
-        },
-        upload_date: {
-        title: "Upload Date",
-        validation: { required: true },
-        dataType: "timestamp"
-        },
          paper_year:{
            title: "Paper year",
            dataType: "number"
         },
-        uploader_id:{
-            title: "Uploader Id",
+         pdf_url: {
+            title: "Pdf Url name",
+            validation: { required: true },
             dataType: "string"
-         },
-         uploader_name:{
-            title: "Uploader name",
+        },
+        uploader: {
+            title: "Uploader",
+            validation: { required: true },
             dataType: "string"
-         }
+        }
     }
 });
 
 // const productSchema = buildSchema<Product>({
 //     name: "Documents",
 //     properties: {
-//         name: {
+//         name: 
 //             title: "title",
 //             validation: { required: true },
 //             dataType: "string"

@@ -50,6 +50,23 @@ type Product = {
     expires_on: Date
 }
 
+type SubjectProduct = {
+    name: string;
+    price: number;
+    status: string;
+    published: boolean;
+    related_products: EntityReference[];
+    main_image: string;
+    tags: string[];
+    description: string;
+    categories: string[];
+    publisher: {
+        name: string;
+        external_id: string;
+    },
+    expires_on: Date
+}
+
 type Document = {
     doc_title: string;
     code_aktu?: string;
@@ -64,6 +81,14 @@ type Document = {
     doc_size:number;
     uploader:string;
 }
+
+type Subjects = {
+    university:number; // 0 for mjpru, 1 for aktu
+    semester:number;
+    branch:string;
+    subjectName:string
+}
+
 const docSchema = buildSchema<Document>({
     name: "Documents",
     properties: {
@@ -121,6 +146,31 @@ const docSchema = buildSchema<Document>({
         },
         uploader: {
             title: "Uploader",
+            validation: { required: true },
+            dataType: "string"
+        }
+    }
+});
+
+const subjectSchema = buildSchema<Subjects>({
+    name: "Subjects",
+    properties: {
+        university: {
+            title: "university",
+            dataType: "number"
+        },
+        semester: {
+            title: "semester",
+            validation: { required: true },
+            dataType: "number"
+        },
+        branch: {
+            title: "semester",
+            validation: { required: true },
+            dataType: "string"
+        },
+        subjectName: {
+            title: "subjectName",
             validation: { required: true },
             dataType: "string"
         }
@@ -289,6 +339,24 @@ export default function App() {
                     path: "products",
                     schema: docSchema,
                     name: "Documents",
+                    permissions: ({ authController }) => ({
+                        edit: true,
+                        create: true,
+                        // we have created the roles object in the navigation builder
+                        delete: authController.extra.roles.includes("admin")
+                    }),
+                    subcollections: [
+                        buildCollection({
+                            name: "Locales",
+                            path: "locales",
+                            schema: localeSchema
+                        })
+                    ]
+                }),
+                buildCollection({
+                    path: "subject",
+                    schema: subjectSchema,
+                    name: "Subjects",
                     permissions: ({ authController }) => ({
                         edit: true,
                         create: true,
